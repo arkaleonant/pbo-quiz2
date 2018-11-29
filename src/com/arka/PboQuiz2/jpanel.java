@@ -7,7 +7,11 @@ package com.arka.PboQuiz2;
 
 import java.awt.Color;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.ObjLongConsumer;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,10 +22,57 @@ public class jpanel extends javax.swing.JFrame {
     /**
      * Creates new form jpanel
      */
+    
+    //membuat variable2 yang membentuk aplikasi ini
+    private int id = 0;
+    private String code;
+    private DefaultTableModel tbModel;
+    private DefaultComboBoxModel cModel;
+    private ArrayList<Item> belanja = new ArrayList<>();
+    
     public jpanel() {
-        initComponents();
+        this.tbModel = tbModel;
+        this.cModel = cModel;
     }
-
+    
+    private void incId(){
+        this.id += 1;
+    }
+    
+    private void decId(){
+        this.id -= 1;
+    }
+    
+    private  Object[] addItem(String nama, int jumlah){
+        float harga = 0;
+        ComboModel items = new ComboModel();
+        for(int i = 0 ; i < items.getHargaBarang().size(); i++){
+            if(nama.equalsIgnoreCase(items.getJenisNama().get(i))){
+                harga = items.getHargaBarang().get(i);
+            }
+        }
+        Object[] obj = {
+            nama,
+            harga,
+            jumlah
+        };
+        return obj;
+    }
+    
+    private String code(){
+        this.incId();
+        String sk = new SimpleDateFormat("yyMMdd").format(new Date());
+        this.code = String.format(sk + "%02d", this.id);
+        return code;
+    }
+    
+    private void updateJumlah(String nama, int add){
+        ArrayList<String> item = new ArrayList<>();
+        for(int i =0; i < tbModel.getRowCount(); i++){
+            item.add(tbModel.getValueAt(i, 2).toString());
+            tbModel.setValueAt(jumlah + add, i, 2);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
