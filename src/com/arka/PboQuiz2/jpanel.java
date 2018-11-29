@@ -5,6 +5,7 @@
  */
 package com.arka.PboQuiz2;
 
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -59,6 +60,12 @@ public class jpanel extends javax.swing.JFrame {
         addButton.setText("Add");
 
         jButton3.setText("Remove");
+
+        codeValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codeValueActionPerformed(evt);
+            }
+        });
 
         itemComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         itemComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -160,6 +167,7 @@ public class jpanel extends javax.swing.JFrame {
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         // TODO add your handling code here:
         // apabila newButton ditekan maka tombol bawahnya akan enabled
+        
         if(newButton.getText().equals("New")){
             addButton.setEnabled(true);
             codeValue.setEnabled(false);
@@ -174,6 +182,11 @@ public class jpanel extends javax.swing.JFrame {
         String tanggal = date1.format(date.getTime());//memanggil tanggal dengan format yg telah dibuat
         codeValue.setText(tanggal + String.format("%02d", 1));//set ke gui
     }//GEN-LAST:event_newButtonActionPerformed
+
+    private void codeValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codeValueActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_codeValueActionPerformed
 
     /**
      * @param args the command line arguments
