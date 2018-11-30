@@ -14,6 +14,10 @@ public class Item {
     private String nama;
     private float harga;
     private int jumlah;
+
+    Item(String nama, float harga, int jumlah) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     //melakukan insert code constructor and getter setter 
     public String getNama() {

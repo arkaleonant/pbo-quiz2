@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.function.ObjLongConsumer;
+import static javafx.beans.binding.Bindings.isEmpty;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -78,6 +80,30 @@ public class jpanel extends javax.swing.JFrame {
             }
         }
     }
+    
+    private boolean Duplicate(String nama){
+        boolean result = false;
+        ArrayList<String> item = new ArrayList<>();
+        for(int i=0; i < tbModel.getRowCount();i++){
+            item.add(tbModel.getValueAt(i, 0).toString());
+        }
+        for(String i : item){
+            if(i.equals(nama)){
+                result = true;
+            }
+        }
+        return result;
+    }
+    
+    private void belanja(){
+        if(isEmpty){
+            this.saveButton.setEnabled(false);
+            this.removeButton.setEnabled(false);
+        } else {
+            this.saveButton.setEnabled(true);
+            this.removeButton.setEnabled(true);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,14 +117,14 @@ public class jpanel extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         newButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
         codeValue = new javax.swing.JTextField();
-        itemComboBox = new javax.swing.JComboBox<>();
+        itemCombo = new javax.swing.JComboBox<>();
         itemValue = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        transaksiTable = new javax.swing.JTable();
+        saveButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,8 +140,18 @@ public class jpanel extends javax.swing.JFrame {
         });
 
         addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Remove");
+        removeButton.setText("Remove");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
 
         codeValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,14 +159,14 @@ public class jpanel extends javax.swing.JFrame {
             }
         });
 
-        itemComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        itemComboBox.addActionListener(new java.awt.event.ActionListener() {
+        itemCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        itemCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemComboBoxActionPerformed(evt);
+                itemComboActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        transaksiTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -141,11 +177,21 @@ public class jpanel extends javax.swing.JFrame {
                 "Nama", "Harga", "Jumlah"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(transaksiTable);
 
-        jButton4.setText("Save");
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Cancel");
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -157,7 +203,7 @@ public class jpanel extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3))
+                        .addComponent(removeButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -167,7 +213,7 @@ public class jpanel extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(itemComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(itemCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(10, 10, 10)
                         .addComponent(itemValue, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
@@ -175,9 +221,9 @@ public class jpanel extends javax.swing.JFrame {
                             .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(newButton, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(saveButton)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton5)
+                        .addComponent(cancelButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -197,52 +243,114 @@ public class jpanel extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(itemComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(itemCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(itemValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(addButton)))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(removeButton)
                 .addGap(11, 11, 11)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(saveButton)
+                    .addComponent(cancelButton))
                 .addContainerGap(73, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void itemComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemComboBoxActionPerformed
+    private void itemComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemComboActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_itemComboBoxActionPerformed
+    }//GEN-LAST:event_itemComboActionPerformed
+
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         // TODO add your handling code here:
         // apabila newButton ditekan maka tombol bawahnya akan enabled
-        
-        if(newButton.getText().equals("New")){
-            addButton.setEnabled(true);
-            codeValue.setEnabled(false);
-            itemComboBox.setEnabled(true);
-            itemValue.setEnabled(true);
-            newButton.setEnabled(false);
-        }
-        int i = 0;
-        i++;
-        Date date = new Date(); //instansiasi object untuk date
-        SimpleDateFormat date1 = new SimpleDateFormat("yyMMdd"); //meamnggil tanggal
-        String tanggal = date1.format(date.getTime());//memanggil tanggal dengan format yg telah dibuat
-        codeValue.setText(tanggal + String.format("%02d", 1));//set ke gui
+        this.itemValue.setText("1");
+        this.newButton.setEnabled(false);
+        this.cancelButton.setEnabled(true);
+        this.addButton.setEnabled(true);
+        this.itemValue.setEnabled(true);
+        this.itemCombo.setEnabled(true);
+        this.codeValue.setText(this.setCode());
     }//GEN-LAST:event_newButtonActionPerformed
 
+        private void newTransaksi(){
+        this.itemValue.setText(" ");
+        this.codeValue.setText(" ");
+        this.newButton.setEnabled(true);
+        this.saveButton.setEnabled(false);
+        this.cancelButton.setEnabled(false);
+        this.addButton.setEnabled(false);
+        this.removeButton.setEnabled(false);
+        this.removeButton.setEnabled(false);
+        this.itemValue.setEnabled(false);
+        this.itemCombo.setEnabled(false);
+        this.tbModel.setRowCount(0);
+        this.belanja.clear();
+    }
+    @SuppressWarnings("unchecked")
     private void codeValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codeValueActionPerformed
         // TODO add your handling code here:
         
     }//GEN-LAST:event_codeValueActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            for(int i=0; i<tbModel.getRowCount();i++){
+                String nama = tbModel.getValueAt(i, 0).toString();
+                float harga = new Float(tbModel.getValueAt(i, 1).toString());
+                int jumlah = new Integer(tbModel.getValueAt(i, 2).toString());
+                this.belanja.add(new Item(nama, harga, jumlah));
+            }
+            
+            Transaksi transaksi = new Transaksi(this.code, this.belanja);
+            
+            StringBuilder sb = new StringBuilder();
+            sb.append(transaksi.Pembayaran());
+            JOptionPane.showMessageDialog(this, sb, "Transaksi", JOptionPane.INFORMATION_MESSAGE);
+            newTransaksi();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+        String nama= this.itemCombo.getSelectedItem().toString();
+        int jumlah = new Integer(this.itemValue.getText());
+        if(Duplicate(nama)){
+            updateJumlah(nama, jumlah);
+        }else {
+            tbModel.addRow(addItem(nama, jumlah));
+        }
+        this.belanja();
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        newTransaksi();
+        this.decId();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        // TODO add your handling code here:
+        if(transaksiTable.getSelectedRow() < 0){
+            String sb = "Pilih item mau dihapus";
+            JOptionPane.showMessageDialog(this, sb, "information", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            int count = transaksiTable.getSelectedRows().length;
+            for(int i = 0; i<count;i++){
+                tbModel.removeRow(transaksiTable.getSelectedRow());
+            }
+        }
+        this.belanja();
+    }//GEN-LAST:event_removeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,16 +389,20 @@ public class jpanel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JTextField codeValue;
-    private javax.swing.JComboBox<String> itemComboBox;
+    private javax.swing.JComboBox<String> itemCombo;
     private javax.swing.JTextField itemValue;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton newButton;
+    private javax.swing.JButton removeButton;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JTable transaksiTable;
     // End of variables declaration//GEN-END:variables
+
+    private String setCode() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

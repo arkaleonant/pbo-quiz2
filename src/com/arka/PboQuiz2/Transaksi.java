@@ -37,6 +37,7 @@ public class Transaksi {
         this.total = total;
     }
     
+    
     // ouput dari transaksi nanti
     public String Pembayaran(){
         setTotal();
