@@ -5,6 +5,7 @@
  */
 package com.arka.PboQuiz2;
 
+
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import static javafx.beans.binding.Bindings.isEmpty;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 /**
  *
@@ -96,7 +98,7 @@ public class jpanel extends javax.swing.JFrame {
     }
     
     private void belanja(){
-        if(isEmpty){
+        if(isEmpty()){
             this.saveButton.setEnabled(false);
             this.removeButton.setEnabled(false);
         } else {
@@ -403,6 +405,10 @@ public class jpanel extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private String setCode() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean isEmpty() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
